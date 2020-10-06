@@ -1,58 +1,34 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
 
-function handleImageCall(userInput) {
-    //This function handles the user input and returns results accordingly
-    if (userInput >= 3 && userInput <= 50) {
-        fetch(`https://dog.ceo/api/breeds/image/random/${userInput}`)
-        .then(response => response.json())
-        .then(responseJson => displayResults(responseJson))
-        .then(responseJson => console.log(responseJson));
-    }
-    else if (userInput < 3 || userInput > 50) {
-        //Uses a promise
-        fetch(`https://dog.ceo/api/breeds/image/random/3`)
-          .then((response) => response.json())
-          .then((responseJson) => displayResults(responseJson))
-          .then((responseJson) => console.log(responseJson))
-          alert("Please select a number between 1 and 50 next time, but for now here are 3 dogs for you!");
-    }
-    else {
-        alert("Sorry, please enter an amount between 1 and 50");
-    }
-};
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Random Dog Generator 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-function displayResults(responseJson) {
-  let myMap = responseJson.message;
-  console.log("Here are the mapped results: " + myMap);
-  console.log(responseJson);
-  $(".results").html("");
-  responseJson.message.forEach(responseImg => {
-    $(".results").append(`<img src="${responseImg}" class="results">`);
-  });  
-  responseJson.message.forEach(myMap => {
-      $(".image-results").replaceWith(
-      `<img src="${myMap}" class="image-results">`
-      );
-  //display the results section
-      $(".results").removeClass("hidden");
-  }
-)};
+<body>
+    <section class="container">
+        <h1>What type of dogs do you want?</h1>
+        <form id="dog-submit">
+            <input type="text" name="breedInput" placeholder="Enter breed" required>
+            <hr>
+            <div class="button">
+                <input type="submit" name="dogbutton">
+            </div>
+        </form>
+        <section class="results hidden">
+            <h2>Here are your dogs!</h2>
+            <div class="image-results"></div>
+        </section>
+    </section>
 
-function handleFormSubmit() {
-  //This function handles the submit button for user input
-  $("#dog-submit").submit((event) => {
-    event.preventDefault();
-    let dogValue = $("#dog-amount").val();
-    console.log(dogValue);
-    handleImageCall(dogValue);
-  });
-}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
 
-$(function() {
-    console.log("test");
-    handleFormSubmit();
-});
-
-/*use the array function map which returns a <img> tags with the src containing the url
-
-all these img tags should be wrapped in a parent div*/
+</html>
