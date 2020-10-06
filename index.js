@@ -2,19 +2,15 @@
 
 function handleImageCall(userInput) {
     //This function handles the user input and returns results accordingly
-    if (userInput >= 3 && userInput <= 50) {
-        fetch(`https://dog.ceo/api/breeds/image/random/${userInput}`)
+    if (userInput >= 1 && userInput <= 50) {
+        fetch(`https://dog.ceo/api/breeds/image/random/${userInput}?random=3`)
         .then(response => response.json())
         .then(responseJson => displayResults(responseJson))
         .then(responseJson => console.log(responseJson));
     }
-    else if (userInput < 3 || userInput > 50) {
+    else if (userInput < 1 || userInput > 50) {
         //Uses a promise
-        fetch(`https://dog.ceo/api/breeds/image/random/3`)
-          .then((response) => response.json())
-          .then((responseJson) => displayResults(responseJson))
-          .then((responseJson) => console.log(responseJson))
-          alert("Please select a number between 1 and 50 next time, but for now here are 3 dogs for you!");
+        alert("Please select a number between 1 and 50");
     }
     else {
         alert("Sorry, please enter an amount between 1 and 50");
