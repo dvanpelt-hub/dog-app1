@@ -1,39 +1,58 @@
-"use strict";
+'use strict';
 
-function getDogImage(breedType) {
-  console.log(breedType);
-  fetch(`https://dog.ceo/api/breed/${breedType}/images/random`)
-    .then((response) => response.json())
-    .then((responseJson) => displayResults(responseJson))
-    .catch((error) => alert("Something is wrong, try again."));
-}
+function handleImageCall(userInput) {
+    //This function handles the user input and returns results accordingly
+    if (userInput >= 3 && userInput <= 50) {
+        fetch(`https://dog.ceo/api/breeds/image/random/${userInput}`)
+        .then(response => response.json())
+        .then(responseJson => displayResults(responseJson))
+        .then(responseJson => console.log(responseJson));
+    }
+    else if (userInput < 3 || userInput > 50) {
+        //Uses a promise
+        fetch(`https://dog.ceo/api/breeds/image/random/3`)
+          .then((response) => response.json())
+          .then((responseJson) => displayResults(responseJson))
+          .then((responseJson) => console.log(responseJson))
+          alert("Please select a number between 1 and 50 next time, but for now here are 3 dogs for you!");
+    }
+    else {
+        alert("Sorry, please enter an amount between 1 and 50");
+    }
+};
 
 function displayResults(responseJson) {
+  let myMap = responseJson.message;
+  console.log("Here are the mapped results: " + myMap);
   console.log(responseJson);
-  //replace the existing image with the new one
-  if (responseJson.status === "success") {
-    $(".image-results").replaceWith(
-    `<img src="${responseJson.message}" class="image-results">`
-  );
+  $(".results").html("");
+  responseJson.message.forEach(responseImg => {
+    $(".results").append(`<img src="${responseImg}" class="results">`);
+  });  
+  responseJson.message.forEach(myMap => {
+      $(".image-results").replaceWith(
+      `<img src="${myMap}" class="image-results">`
+      );
   //display the results section
-    $(".results").removeClass("hidden");
+      $(".results").removeClass("hidden");
   }
-  
-  else {
-    alert("No breed found, please try again");
-  }
-}
+)};
 
-function watchForm() {
-  $("form").submit((event) => {
+function handleFormSubmit() {
+  //This function handles the submit button for user input
+  $("#dog-submit").submit((event) => {
     event.preventDefault();
-    let breedInput = $('input[name="breedInput"]').val();
-    console.log(breedInput);
-    getDogImage(breedInput);
+    let dogValue = $("#dog-amount").val();
+    console.log(dogValue);
+    handleImageCall(dogValue);
   });
 }
 
-$(function () {
-  console.log("App loaded! Waiting for submit!");
-  watchForm();
+$(function() {
+    console.log("test");
+    handleFormSubmit();
 });
+
+/*use the array function map which returns a <img> tags with the src containing the url
+
+all these img tags should be wrapped in a parent div*/
