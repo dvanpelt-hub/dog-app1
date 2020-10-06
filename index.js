@@ -1,34 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+"use strict";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Random Dog Generator 2</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+function getDogImage(breedType) {
+  console.log(breedType);
+  fetch(`https://dog.ceo/api/breed/${breedType}/images/random`)
+    .then((response) => response.json())
+    .then((responseJson) => displayResults(responseJson))
+    .catch((error) => alert("Something is wrong, try again."));
+}
 
-<body>
-    <section class="container">
-        <h1>What type of dogs do you want?</h1>
-        <form id="dog-submit">
-            <input type="text" name="breedInput" placeholder="Enter breed" required>
-            <hr>
-            <div class="button">
-                <input type="submit" name="dogbutton">
-            </div>
-        </form>
-        <section class="results hidden">
-            <h2>Here are your dogs!</h2>
-            <div class="image-results"></div>
-        </section>
-    </section>
+function displayResults(responseJson) {
+  console.log(responseJson);
+  //replace the existing image with the new one
+  if (responseJson.status === "success") {
+    $(".image-results").replaceWith(
+    `<img src="${responseJson.message}" class="image-results">`
+  );
+  //display the results section
+    $(".results").removeClass("hidden");
+  }
+  
+  else {
+    alert("No breed found, please try again");
+  }
+}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"
-        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-</body>
+function watchForm() {
+  $("form").submit((event) => {
+    event.preventDefault();
+    let breedInput = $('input[name="breedInput"]').val();
+    console.log(breedInput);
+    getDogImage(breedInput);
+  });
+}
 
-</html>
+$(function () {
+  console.log("App loaded! Waiting for submit!");
+  watchForm();
+});
